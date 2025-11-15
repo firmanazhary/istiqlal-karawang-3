@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yayasan Pendidikan Ma'had Al Istiqlal Karawang - Ceria!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        /* Custom Tailwind Configuration for SANGAT CERIA & FULL VEKTOR Theme */
+        :root {
+            --color-primary: #38bdf8; /* sky-400 (Biru Muda Langit) */
+            --color-secondary: #fde047; /* yellow-300 (Kuning Cerah Matahari) */
+            --color-tertiary: #a3e635; /* lime-300 (Hijau Limau Segar) */
+            --color-accent: #f472b6; /* pink-400 (Pink Ceria) */
+        }
+        .text-primary { color: var(--color-primary); }
+        .bg-primary { background-color: var(--color-primary); }
+        .hover\:bg-primary-dark:hover { background-color: #0ea5e9; } /* sky-500 */
+        .text-secondary { color: var(--color-secondary); }
+        .bg-secondary { background-color: var(--color-secondary); }
+        .bg-tertiary { background-color: var(--color-tertiary); }
+        .text-accent { color: var(--color-accent); }
+        .bg-accent { background-color: var(--color-accent); }
+
+        /* Custom Shapes (Vector Simulation using CSS/SVG for modern feel) */
+        .vector-wave-bg {
+            position: relative;
+            background-color: var(--color-primary);
+        }
+        /* Vektor Gelombang Kuning di bawah Hero */
+        .vector-wave-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39.57.82,4.87,1.6,4.87,1.6l-20.94,84.15c-11.95,4.35-23.71,6.86-36.21,6.86-53.75,0-108.73-17.73-162.77-52.61C479.54,81.41,407.41,83.1,344.66,72.4c-53.33-9.14-101.44-24.3-145.42-45.74C131.57,17.4,59.39,5.77,0,0L0,120H1200V0C1135.29,48.66,1088.13,76.54,1035.79,90.43c-35.33,9.45-72.01,13.91-109.28,13.91-103.04,0-208.61-39.06-258.9-80.66C623.58,6.17,506.77,3.61,407.44,5.92c-68.53,1.57-142.33,10.22-211.59,25.92C128.44,48.15,64.24,56.78,0,61.5L0,0Z' class='shape-fill' fill='%23fde047'/%3E%3C/svg%3E") no-repeat bottom / 100% 100px;
+            z-index: 1;
+        }
+
+        /* Stat Cards */
+        .stat-card { transition: all 0.3s; border-radius: 1.5rem; overflow: hidden; position: relative; z-index: 10; }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background-color: var(--color-secondary);
+            opacity: 0.3;
+            border-radius: 0 0 0 100%;
+            z-index: -1;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px -5px rgba(56, 189, 248, 0.4);
+        }
+        .stat-card:hover::before {
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            border-radius: 1.5rem;
+        }
+
+        /* Program Cards */
+        .program-card {
+            transition: all 0.3s;
+            border-radius: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+        }
+        .program-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-accent);
+            opacity: 0.2;
+            border-radius: 50%;
+            transition: all 0.5s ease-in-out;
+            z-index: 0;
+        }
+        .program-card:nth-child(2)::after { background-color: var(--color-primary); }
+        .program-card:nth-child(3)::after { background-color: var(--color-tertiary); }
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -5px rgba(244, 114, 182, 0.4); /* pink shadow */
+        }
+        .program-card:hover::after {
+            transform: scale(1.5);
+            opacity: 0.4;
+        }
+        
+        .news-card { transition: all 0.3s; border-radius: 1.5rem; overflow: hidden; }
+        .news-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+        .page-content { display: none; }
+        .active-link { color: var(--color-accent); font-weight: 800; border-bottom: 4px solid var(--color-secondary); padding-bottom: 5px; margin-bottom: -5px; }
+
+        /* Animation for Floating Elements */
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(0, -10px); }
+            100% { transform: translate(0, 0); }
+        }
+        .float-icon { animation: float 6s ease-in-out infinite; }
+
+        /* Custom Wave Divider for Jenjang Pages */
+        .wave-divider {
+            position: relative;
+            height: 150px;
+            margin-bottom: -50px;
+        }
+        .wave-divider-top {
+            background-color: var(--color-secondary);
+            clip-path: ellipse(100% 100% at 50% 100%);
+        }
+        .wave-divider-bottom {
+            background-color: var(--color-primary);
+            clip-path: ellipse(100% 70% at 50% 0%);
+        }
+
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-gray-800">
+
+    <header class="sticky top-0 z-50 bg-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-extrabold text-accent" data-page-link="home">
+                <i data-feather="sun" class="w-6 h-6 inline-block mr-1 align-text-bottom text-secondary"></i> Al Istiqlal <span class="text-primary">Ceria!</span>
+            </a>
+            <nav class="hidden md:flex space-x-8 items-center text-gray-700 font-medium">
+                <a href="#home" class="nav-link hover:text-accent transition" data-page-link="home">Home</a>
+                <a href="#tentang" class="nav-link hover:text-accent transition" data-page-link="tentang">Tentang Yayasan</a>
+                <div class="relative group">
+                    <button class="nav-link flex items-center hover:text-accent">
+                        Jenjang <i data-feather="chevron-down" class="ml-1 w-4 h-4"></i>
+                    </button>
+                    <div class="absolute hidden group-hover:block bg-white shadow-xl rounded-2xl py-2 w-48 border border-gray-100 top-full -mt-1">
+                        <a href="#ra" class="block px-4 py-2 hover:bg-sky-50 hover:text-primary font-normal" data-page-link="ra">Raudatul Athfal (RA)</a>
+                        <a href="#mi" class="block px-4 py-2 hover:bg-sky-50 hover:text-primary font-normal" data-page-link="mi">Madrasah Ibtidaiyah (MI)</a>
+                        <a href="#mts" class="block px-4 py-2 hover:bg-sky-50 hover:text-primary font-normal" data-page-link="mts">Madrasah Tsanawiyah (MTs)</a>
+                    </div>
+                </div>
+                <a href="#fasilitas" class="nav-link hover:text-accent transition" data-page-link="fasilitas">Fasilitas</a>
+                <a href="#berita" class="nav-link hover:text-accent transition" data-page-link="berita">Berita</a>
+                <a href="#" class="bg-accent hover:bg-pink-500 text-white px-5 py-2 rounded-full font-bold transition shadow-lg hover:shadow-xl transform hover:scale-105">PPDB Online</a>
+            </nav>
+            <button class="md:hidden" id="mobile-menu-btn">
+                <i data-feather="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="md:hidden bg-white shadow-xl fixed inset-x-0 top-[60px] z-40 hidden p-4 border-t border-gray-100">
+        <nav class="flex flex-col space-y-3">
+            <a href="#home" class="nav-link py-2 border-b border-gray-100 hover:text-accent" data-page-link="home">Home</a>
+            <a href="#tentang" class="nav-link py-2 border-b border-gray-100 hover:text-accent" data-page-link="tentang">Tentang Yayasan</a>
+            <a href="#ra" class="nav-link py-2 pl-4 text-gray-600 hover:text-accent" data-page-link="ra">RA</a>
+            <a href="#mi" class="nav-link py-2 pl-4 text-gray-600 hover:text-accent" data-page-link="mi">MI</a>
+            <a href="#mts" class="nav-link py-2 pl-4 text-gray-600 hover:text-accent" data-page-link="mts">MTs</a>
+            <a href="#fasilitas" class="nav-link py-2 border-b border-gray-100 hover:text-accent" data-page-link="fasilitas">Fasilitas</a>
+            <a href="#berita" class="nav-link py-2 border-b border-gray-100 hover:text-accent" data-page-link="berita">Berita</a>
+            <a href="#" class="mt-4 text-center bg-accent hover:bg-pink-500 text-white px-5 py-2 rounded-full font-bold transition">PPDB Online</a>
+        </nav>
+    </div>
+
+    <main id="content-container">
+
+        <section id="home-page" class="page-content" data-page="home">
+            <div class="vector-wave-bg h-[600px] flex items-center relative overflow-hidden ">
+                <div class="container mx-auto px-4 relative z-10">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div class="md:w-1/2 text-white">
+                            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-xl">
+                                <span class="text-secondary block">Dunia Ceria</span> Membentuk Generasi Unggul & Berkarakter!
+                            </h1>
+                            <p class="text-lg md:text-xl font-medium mb-8 drop-shadow-md">
+                                Bergabunglah dengan Yayasan Al Istiqlal dari jenjang RA, MI, hingga MTs. Di sini, setiap hari adalah petualangan penuh tawa dan ilmu!
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <a href="#" class="bg-accent hover:bg-pink-500 text-white px-8 py-4 rounded-full font-bold text-lg transition shadow-2xl border-4 border-white transform hover:scale-105">Daftar Sekarang (PPDB)</a>
+                                <a href="#tentang" data-page-link="tentang" class="bg-secondary hover:bg-yellow-400 text-gray-900 px-8 py-4 rounded-full font-bold text-lg transition shadow-2xl border-4 border-white transform hover:scale-105">Tentang Kami</a>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 h-full flex justify-center items-center relative">
+                            <img src="https://cdn.pixabay.com/photo/2023/12/15/17/09/ai-generated-8451031_640.png" alt="Ilustrasi Anak Sekolah Ceria Vektor Penuh Warna" class="w-full max-w-sm float-icon rounded-xl" style="animation-delay: 0.5s; ">
+                            <i data-feather="feather" class="absolute top-10 right-0 w-8 h-8 text-secondary float-icon" style="animation-duration: 4s;"></i>
+                            <i data-feather="cloud" class="absolute bottom-5 left-10 w-12 h-12 text-white opacity-50 float-icon" style="animation-duration: 7s; animation-delay: 2s;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="py-16 bg-secondary relative -mt-[50px] z-20">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="stat-card bg-white p-6 rounded-2xl shadow-xl border-b-4 border-primary text-center">
+                            <div class="text-primary mb-2"><i data-feather="home" class="w-8 h-8 mx-auto"></i></div>
+                            <h3 class="text-4xl font-extrabold text-gray-800 mb-1">3</h3>
+                            <p class="text-gray-600 font-semibold">Sekolah</p>
+                        </div>
+                        <div class="stat-card bg-white p-6 rounded-2xl shadow-xl border-b-4 border-accent text-center">
+                            <div class="text-accent mb-2"><i data-feather="users" class="w-8 h-8 mx-auto"></i></div>
+                            <h3 class="text-4xl font-extrabold text-gray-800 mb-1">62</h3>
+                            <p class="text-gray-600 font-semibold">Guru</p>
+                        </div>
+                        <div class="stat-card bg-white p-6 rounded-2xl shadow-xl border-b-4 border-tertiary text-center">
+                            <div class="text-tertiary mb-2"><i data-feather="book-open" class="w-8 h-8 mx-auto"></i></div>
+                            <h3 class="text-4xl font-extrabold text-gray-800 mb-1">825</h3>
+                            <p class="text-gray-600 font-semibold">Siswa</p>
+                        </div>
+                        <div class="stat-card bg-white p-6 rounded-2xl shadow-xl border-b-4 border-secondary text-center">
+                            <div class="text-secondary mb-2"><i data-feather="award" class="w-8 h-8 mx-auto"></i></div>
+                            <h3 class="text-4xl font-extrabold text-gray-800 mb-1">985</h3>
+                            <p class="text-gray-600 font-semibold">Alumni</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-20 bg-gray-50 relative">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-primary">Petualangan Belajar di Setiap Jenjang</h2>
+                <div class="absolute top-10 left-5 w-20 h-20 bg-primary rounded-full opacity-10 blur-xl"></div>
+                <div class="absolute bottom-10 right-5 w-24 h-24 bg-accent rounded-full opacity-10 blur-xl"></div>
+                
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="program-card bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl border-4 border-secondary relative z-10">
+                            <div class="bg-secondary h-48 flex items-center justify-center">
+                                <img src="https://cdn.pixabay.com/photo/2021/07/21/04/23/children-6482187_640.png" alt="RA Al Istiqlal" class="w-3/4 h-auto object-contain p-4">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-2 text-secondary">Raudatul Athfal (RA)</h3>
+                                <p class="text-gray-600 mb-4">Pendidikan usia dini yang ceria, mengembangkan potensi anak menyeluruh dengan dasar keislaman.</p>
+                                <a href="#ra" data-page-link="ra" class="text-accent font-bold flex items-center hover:text-primary transition">Yuk, Jelajahi Dunia Bermain! <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+                        <div class="program-card bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl border-4 border-tertiary relative z-10">
+                            <div class="bg-tertiary h-48 flex items-center justify-center">
+                                <img src="https://cdn.pixabay.com/photo/2018/06/20/07/58/reading-3486334_640.png" alt="MI Al Istiqlal" class="w-3/4 h-auto object-contain p-4">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-2 text-tertiary">Madrasah Ibtidaiyah (MI)</h3>
+                                <p class="text-gray-600 mb-4">Pendidikan dasar yang memadukan kurikulum nasional dengan penguatan karakter islami dan prestasi.</p>
+                                <a href="#mi" data-page-link="mi" class="text-accent font-bold flex items-center hover:text-primary transition">Yuk, Raih Bintang Prestasi! <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+                        <div class="program-card bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl border-4 border-primary relative z-10">
+                            <div class="bg-primary h-48 flex items-center justify-center">
+                                <img src="https://cdn.pixabay.com/photo/2023/12/28/15/22/ai-generated-8475271_640.png" alt="MTs Al Istiqlal" class="w-3/4 h-auto object-contain p-4">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-2 text-primary">Madrasah Tsanawiyah (MTs)</h3>
+                                <p class="text-gray-600 mb-4">Pendidikan menengah yang mempersiapkan generasi berprestasi, mandiri, dan berakhlak mulia.</p>
+                                <a href="#mts" data-page-link="mts" class="text-accent font-bold flex items-center hover:text-primary transition">Yuk, Wujudkan Potensimu! <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-white relative overflow-hidden">
+                <div class="absolute top-0 -left-10 w-40 h-40 bg-accent rounded-full opacity-10 blur-2xl z-0"></div>
+                <div class="absolute bottom-0 -right-20 w-60 h-60 bg-secondary rounded-full opacity-10 blur-3xl z-0"></div>
+
+                <div class="container mx-auto px-4 relative z-10">
+                    <div class="flex flex-col md:flex-row items-center gap-10 bg-gray-50 p-8 rounded-3xl shadow-2xl border-l-8 border-r-8 border-primary">
+                        <div class="md:w-1/3">
+                            <img src="https://cdn.pixabay.com/photo/2024/08/31/05/47/ai-generated-9010550_640.png" alt="Ketua Yayasan" class="rounded-full shadow-2xl w-full h-auto border-8 border-white transform hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="md:w-2/3">
+                            <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-accent">Pesan Hangat dari Ketua Yayasan</h2>
+                            <h3 class="text-xl text-gray-700 font-bold mb-6">Prof. Dr. Hj. Nurhattati Fuad, M.Pd <i data-feather="heart" class="w-5 h-5 inline-block text-red-500"></i></h3>
+                            <blockquote class="text-lg text-gray-600 italic border-l-4 border-secondary pl-4">
+                                "Kami berkomitmen untuk memberikan pendidikan yang tidak hanya unggul dalam ilmu pengetahuan, tetapi juga kaya akan nilai-nilai keislaman dan akhlak mulia. **Bersama kita bentuk generasi yang cerdas, berkarakter, dan penuh senyum!**"
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-tertiary bg-opacity-10 relative">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-accent">Program Unggulan Penuh Ceria! <i data-feather="star" class="w-8 h-8 inline-block text-secondary"></i></h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-4 border-dashed border-secondary relative z-10">
+                            <div class="bg-yellow-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-secondary">
+                                <i data-feather="book-open" class="w-10 h-10 text-secondary transition transform hover:rotate-6"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold mb-2 text-primary">Tasmi Alquran</h3>
+                            <p class="text-gray-600">Program intensif penghafalan Alquran dengan metode khusus yang menyenangkan.</p>
+                        </div>
+                        
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-4 border-dashed border-primary relative z-10">
+                            <div class="bg-sky-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-primary">
+                                <i data-feather="award" class="w-10 h-10 text-primary transition transform hover:scale-110"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold mb-2 text-accent">Prestasi Olah Raga</h3>
+                            <p class="text-gray-600">Membina bakat di bidang olahraga seperti badminton dan futsal untuk meraih prestasi.</p>
+                        </div>
+                        
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-4 border-dashed border-tertiary relative z-10">
+                            <div class="bg-lime-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-tertiary">
+                                <i data-feather="heart" class="w-10 h-10 text-tertiary transition transform hover:shake"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold mb-2 text-secondary">Sekolah Sehat</h3>
+                            <p class="text-gray-600">Lingkungan belajar yang bersih, nyaman, dan mendukung tumbuh kembang anak secara optimal.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">Berita & Kegiatan Seru Kami!</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="news-card bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl">
+                            <img src="https://placehold.co/640x360/38bdf8/FFFFFF?text=MTs+Juara+Badminton" alt="MTs Juara Badminton" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-primary text-white text-xs px-3 py-1 rounded-full mb-2 font-semibold">MTs</span>
+                                <h3 class="text-lg font-bold mb-2 text-gray-800">MTs Al-Istiqlal Juara 1 Badminton Putra Tingkat Kabupaten</h3>
+                                <p class="text-gray-600 text-sm mb-4">Tim badminton putra MTs berhasil meraih juara 1 dan juara 3 hadang putri. Prestasi membanggakan!</p>
+                                <a href="#berita" data-page-link="berita" class="text-accent text-sm font-bold flex items-center">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-3 h-3"></i></a>
+                            </div>
+                        </div>
+                        <div class="news-card bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl">
+                            <img src="https://placehold.co/640x360/fde047/gray-800?text=RA+Cooking+Class" alt="Cooking Class RA" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-secondary text-gray-800 text-xs px-3 py-1 rounded-full mb-2 font-semibold">RA</span>
+                                <h3 class="text-lg font-bold mb-2 text-gray-800">Cooking Class & Shopping Day RA Al Istiqlal</h3>
+                                <p class="text-gray-600 text-sm mb-4">Kegiatan seru cooking class dan simulasi belanja untuk melatih kemandirian dan kreativitas anak RA.</p>
+                                <a href="#berita" data-page-link="berita" class="text-accent text-sm font-bold flex items-center">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-3 h-3"></i></a>
+                            </div>
+                        </div>
+                        <div class="news-card bg-white rounded-2xl shadow-xl overflow-hidden transition hover:shadow-2xl">
+                            <img src="https://placehold.co/640x360/a3e635/gray-800?text=MI+Sekolah+Sehat" alt="Sekolah Sehat" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-tertiary text-gray-800 text-xs px-3 py-1 rounded-full mb-2 font-semibold">MI</span>
+                                <h3 class="text-lg font-bold mb-2 text-gray-800">MI Al-Istiqlal kembali sukses menjadi Juara I Sekolah Sehat</h3>
+                                <p class="text-gray-600 text-sm mb-4">MI Al-Istiqlal meraih predikat sebagai Sekolah Sehat Tingkat Provinsi Jawa Barat. Lingkungan yang sehat!</p>
+                                <a href="#berita" data-page-link="berita" class="text-accent text-sm font-bold flex items-center">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-3 h-3"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-10">
+                        <a href="#berita" data-page-link="berita" class="inline-flex items-center text-accent font-bold text-lg hover:text-primary transition duration-300">
+                            Lihat semua berita <i data-feather="arrow-right" class="ml-2 w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-accent text-white relative overflow-hidden">
+                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 8px 8px;"></div>
+                <div class="container mx-auto px-4 text-center relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4 drop-shadow-lg">Mari Bergabung dan Raih Mimpi Penuh Warna!</h2>
+                    <p class="text-lg mb-8 max-w-2xl mx-auto font-medium">Daftarkan putra-putri Anda untuk mendapatkan pendidikan terbaik yang memadukan ilmu pengetahuan dan akhlak mulia.</p>
+                    <a href="#" class="inline-block bg-secondary text-gray-900 hover:bg-yellow-400 px-10 py-4 rounded-full font-bold text-xl shadow-2xl transition transform hover:scale-105">Daftar Sekarang (PPDB)</a>
+                </div>
+            </section>
+        </section>
+
+
+        <section id="ra-page" class="page-content" data-page="ra">
+            
+            <div class="relative bg-secondary pt-24 pb-32 overflow-hidden">
+                <div class="container mx-auto px-4 text-white max-w-4xl relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-2 drop-shadow-lg text-accent">
+                        Dunia Petualangan Si Kecil: RA Al Istiqlal
+                    </h1>
+                    <p class="text-xl font-medium drop-shadow-md text-gray-800">
+                        Membentuk fondasi Generasi Qur'ani yang Cerdas, Ceria, dan Berakhlak mulia.
+                    </p>
+                    <img src="https://cdn.pixabay.com/photo/2021/07/21/04/23/children-6482187_640.png" alt="Ilustrasi Anak RA" class="w-full max-w-xs mx-auto mt-8 float-icon" style="animation-duration: 5s;">
+                </div>
+                <div class="absolute bottom-0 left-0 w-full h-24 bg-gray-50" style="clip-path: ellipse(100% 70% at 50% 100%);"></div>
+            </div>
+
+            <section class="py-16 bg-gray-50 relative overflow-hidden">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row items-center gap-10 bg-white p-8 rounded-3xl shadow-2xl border-l-8 border-accent">
+                        <div class="md:w-1/2">
+                            <img src="https://placehold.co/500x350/f472b6/FFFFFF?text=Bermain+%26+Belajar" alt="Belajar Sambil Bermain di RA" class="rounded-2xl shadow-xl w-full h-auto border-4 border-secondary">
+                        </div>
+                        <div class="md:w-1/2">
+                            <h2 class="text-3xl font-extrabold mb-4 flex items-center text-primary">
+                                <i data-feather="smile" class="w-8 h-8 mr-2 text-secondary"></i> Selamat Datang di RA Al Istiqlal!
+                            </h2>
+                            <p class="text-lg text-gray-600 mb-4">
+                                RA Al Istiqlal adalah tempat pertama si kecil memulai petualangan belajarnya. Kami fokus pada stimulasi motorik, kognitif, dan sosial emosional, sambil menanamkan nilai-nilai islami sejak dini. Lingkungan kami dirancang agar setiap hari adalah hari yang menyenangkan!
+                            </p>
+                            <p class="text-lg text-gray-600">
+                                Guru-guru kami adalah pendamping yang penuh kasih sayang, siap membimbing anak Anda menjadi generasi Qur'ani yang percaya diri.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12 text-accent">Program Unggulan yang Seru!</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-secondary relative z-10">
+                            <div class="text-secondary mx-auto mb-3 bg-secondary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="coffee" class="w-12 h-12 mx-auto text-secondary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-primary">Cooking Class & Shopping Day</h3>
+                            <p class="text-gray-600">Melatih kemandirian, motorik halus, dan konsep dasar ekonomi melalui kegiatan menyenangkan.</p>
+                        </div>
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-primary relative z-10">
+                            <div class="text-primary mx-auto mb-3 bg-primary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="bookmark" class="w-12 h-12 mx-auto text-primary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-accent">Tasmi Al Quran & Hafalan Pendek</h3>
+                            <p class="text-gray-600">Pengenalan dan hafalan juz 'amma serta doa harian dengan metode bermain yang ceria.</p>
+                        </div>
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-tertiary relative z-10">
+                            <div class="text-tertiary mx-auto mb-3 bg-tertiary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="gift" class="w-12 h-12 mx-auto text-tertiary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-primary">Pembelajaran Sentra (Fun Learning)</h3>
+                            <p class="text-gray-600">Metode belajar aktif di berbagai sentra (balok, seni, drama) untuk memaksimalkan kecerdasan majemuk.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-primary text-white">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Siap Menjadi Bagian dari Keluarga RA Al Istiqlal?</h2>
+                    <a href="#" class="inline-block bg-secondary text-gray-900 hover:bg-yellow-400 px-10 py-4 rounded-full font-bold text-xl shadow-xl transition">Daftar PPDB Online Sekarang!</a>
+                </div>
+            </section>
+
+        </section>
+
+
+        <section id="mi-page" class="page-content" data-page="mi">
+            
+            <div class="relative bg-primary pt-24 pb-32 overflow-hidden">
+                <div class="container mx-auto px-4 text-white max-w-4xl relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-2 drop-shadow-lg text-secondary">
+                        Raih Prestasi dengan Hati Gembira: MI Al Istiqlal
+                    </h1>
+                    <p class="text-xl font-medium drop-shadow-md">
+                        Mencetak Lulusan Berprestasi dengan Landasan Iman dan Taqwa yang Kokoh.
+                    </p>
+                    <img src="https://cdn.pixabay.com/photo/2018/06/20/07/58/reading-3486334_640.png" alt="Ilustrasi Siswa MI" class="w-full max-w-xs mx-auto mt-8 float-icon" style="animation-delay: 1s; animation-duration: 6s;">
+                </div>
+                <div class="absolute bottom-0 left-0 w-full h-24 bg-gray-50" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);"></div>
+            </div>
+
+            <section class="py-16 bg-gray-50 relative overflow-hidden">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row items-center gap-10 bg-white p-8 rounded-3xl shadow-2xl border-r-8 border-tertiary">
+                        <div class="md:w-1/2 order-2 md:order-1">
+                            <h2 class="text-3xl font-extrabold mb-4 flex items-center text-primary">
+                                <i data-feather="star" class="w-8 h-8 mr-2 text-accent"></i> Tentang MI Al Istiqlal
+                            </h2>
+                            <p class="text-lg text-gray-600 mb-4">
+                                MI Al Istiqlal menawarkan pendidikan dasar yang seimbang antara ilmu pengetahuan umum dan pendidikan agama. Kami mendorong setiap siswa untuk berprestasi, baik di bidang akademik maupun non-akademik, didukung oleh fasilitas yang memadai.
+                            </p>
+                            <p class="text-lg text-gray-600">
+                                Kami berkomitmen menciptakan lingkungan belajar yang inspiratif, di mana siswa merasa termotivasi untuk mengeksplorasi bakat mereka dan mengembangkan karakter islami yang kuat.
+                            </p>
+                        </div>
+                        <div class="md:w-1/2 order-1 md:order-2">
+                            <img src="https://placehold.co/500x350/a3e635/gray-800?text=Siswa+MI+Belajar" alt="Kegiatan Siswa MI" class="rounded-2xl shadow-xl w-full h-auto border-4 border-accent">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12 text-primary">Program Unggulan Seru MI Kami!</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-tertiary relative z-10">
+                            <div class="text-tertiary mx-auto mb-3 bg-tertiary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="shield" class="w-12 h-12 mx-auto text-tertiary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-accent">Juara I Sekolah Sehat</h3>
+                            <p class="text-gray-600">Fokus pada kebersihan dan kesehatan lingkungan sekolah, memastikan siswa belajar di tempat terbaik.</p>
+                        </div>
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-primary relative z-10">
+                            <div class="text-primary mx-auto mb-3 bg-primary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="sun" class="w-12 h-12 mx-auto text-primary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-secondary">Program Tahfidz & Tasmi Alquran</h3>
+                            <p class="text-gray-600">Program unggulan hafalan Alquran yang terintegrasi dalam kurikulum, membentuk karakter Qur'ani.</p>
+                        </div>
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-secondary relative z-10">
+                            <div class="text-secondary mx-auto mb-3 bg-secondary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="activity" class="w-12 h-12 mx-auto text-secondary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-accent">Ekstrakurikuler Olah Raga & Seni</h3>
+                            <p class="text-gray-600">Berbagai pilihan ekskul untuk menyalurkan bakat dan minat siswa, dari futsal, badminton, hingga seni.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-accent text-white">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Siap Menjadi Bintang di MI Al Istiqlal?</h2>
+                    <a href="#" class="inline-block bg-secondary text-gray-900 hover:bg-yellow-400 px-10 py-4 rounded-full font-bold text-xl shadow-xl transition">Daftar PPDB Online Sekarang!</a>
+                </div>
+            </section>
+
+        </section>
+
+
+        <section id="mts-page" class="page-content" data-page="mts">
+            
+            <div class="relative bg-tertiary pt-24 pb-32 overflow-hidden">
+                <div class="container mx-auto px-4 text-gray-800 max-w-4xl relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-2 drop-shadow-lg text-primary">
+                        Wujudkan Potensimu, Raih Masa Depan: MTs Al Istiqlal
+                    </h1>
+                    <p class="text-xl font-medium drop-shadow-md text-white">
+                        Mempersiapkan Generasi Unggul untuk Jenjang Pendidikan Tinggi dengan Ilmu dan Akhlak Mulia.
+                    </p>
+                    <img src="https://cdn.pixabay.com/photo/2023/12/28/15/22/ai-generated-8475271_640.png" alt="Ilustrasi Siswa MTs" class="w-full max-w-xs mx-auto mt-8 float-icon" style="animation-delay: 2s; animation-duration: 8s;">
+                </div>
+                <div class="absolute bottom-0 left-0 w-full h-24 bg-gray-50" style="clip-path: ellipse(100% 70% at 50% 100%);"></div>
+            </div>
+
+            <section class="py-16 bg-gray-50 relative overflow-hidden">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row items-center gap-10 bg-white p-8 rounded-3xl shadow-2xl border-l-8 border-primary">
+                        <div class="md:w-1/2">
+                            <img src="https://placehold.co/500x350/38bdf8/FFFFFF?text=Remaja+Belajar+MTs" alt="Belajar Bersama MTs" class="rounded-2xl shadow-xl w-full h-auto border-4 border-secondary">
+                        </div>
+                        <div class="md:w-1/2">
+                            <h2 class="text-3xl font-extrabold mb-4 flex items-center text-primary">
+                                <i data-feather="zap" class="w-8 h-8 mr-2 text-accent"></i> Tentang MTs Al Istiqlal
+                            </h2>
+                            <p class="text-lg text-gray-600 mb-4">
+                                MTs Al Istiqlal adalah gerbang menuju masa depan gemilang. Kami fokus pada pengembangan akademis tingkat lanjut, keterampilan hidup (soft skills), dan pendalaman karakter remaja yang mandiri dan bertanggung jawab.
+                            </p>
+                            <p class="text-lg text-gray-600">
+                                Kurikulum kami dirancang untuk menantang dan menginspirasi, memastikan setiap siswa MTs siap bersaing di jenjang yang lebih tinggi dan membawa dampak positif bagi masyarakat.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12 text-accent">Program Unggulan MTs yang Inspiratif!</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-primary relative z-10">
+                            <div class="text-primary mx-auto mb-3 bg-primary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="activity" class="w-12 h-12 mx-auto text-primary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-secondary">Prestasi Olahraga Juara</h3>
+                            <p class="text-gray-600">Pembinaan intensif untuk kompetisi olahraga regional: Juara 1 Badminton Putra & Juara 3 Hadang Putri.</p>
+                        </div>
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-secondary relative z-10">
+                            <div class="text-secondary mx-auto mb-3 bg-secondary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="book-open" class="w-12 h-12 mx-auto text-secondary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-accent">Program Tahfidz & Tasmi Alquran</h3>
+                            <p class="text-gray-600">Penguatan hafalan dan pemahaman Alquran sebagai bekal spiritual dan moral untuk jenjang remaja.</p>
+                        </div>
+                        <div class="program-card bg-white p-8 rounded-3xl shadow-xl text-center transition hover:shadow-2xl border-b-8 border-tertiary relative z-10">
+                            <div class="text-tertiary mx-auto mb-3 bg-tertiary bg-opacity-10 p-4 rounded-full inline-block"><i data-feather="globe" class="w-12 h-12 mx-auto text-tertiary"></i></div>
+                            <h3 class="text-xl font-bold mb-2 text-primary">E-Learning & Pembelajaran Digital</h3>
+                            <p class="text-gray-600">Penggunaan teknologi terbaru untuk mendukung pembelajaran yang dinamis dan relevan dengan masa kini.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-primary text-white">
+                <div class="container mx-auto px-4 text-center">
+                    <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Siap Menjadi Pemimpin Masa Depan di MTs Al Istiqlal?</h2>
+                    <a href="#" class="inline-block bg-secondary text-gray-900 hover:bg-yellow-400 px-10 py-4 rounded-full font-bold text-xl shadow-xl transition">Daftar PPDB Online Sekarang!</a>
+                </div>
+            </section>
+
+        </section>
+
+        <section id="tentang-page" class="page-content" data-page="tentang">
+            <div class="relative py-24 bg-primary text-white text-center overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-accent rounded-full opacity-20 blur-xl z-0"></div>
+                <div class="container mx-auto px-4 relative z-10">
+                    <h1 class="text-4xl font-extrabold text-secondary">Tentang Yayasan Pendidikan Ma'had Al Istiqlal</h1>
+                    <p class="text-xl mt-2">Sejarah, Visi, Misi, dan Struktur Organisasi Kami yang Penuh Warna.</p>
+                    <img src="https://cdn.pixabay.com/photo/2014/03/08/22/32/escalator-283448_640.jpg" alt="Gedung Yayasan" class="w-full h-auto md:h-[300px] object-cover rounded-3xl mt-8 shadow-2xl border-4 border-secondary">
+                </div>
+            </div>
+            
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-6 text-primary border-b-4 border-accent pb-2 inline-block">Visi & Misi Kami</h2>
+                    <p class="text-lg text-gray-600 mb-8">Yayasan berkomitmen menjadi penyelenggara pendidikan yang unggul dalam pengetahuan dan akhlak mulia.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="p-6 bg-primary bg-opacity-10 rounded-2xl border-l-4 border-primary shadow-lg">
+                            <h3 class="text-2xl font-semibold mb-3 text-accent"><i data-feather="eye" class="w-6 h-6 inline-block mr-2"></i> Visi</h3>
+                            <p class="text-gray-700 font-medium">Menjadi penyelengara pendidikan yang unggul dalam pengetahuan dan akhlak mulia.</p>
+                        </div>
+                        <div class="p-6 bg-secondary bg-opacity-10 rounded-2xl border-l-4 border-secondary shadow-lg">
+                            <h3 class="text-2xl font-semibold mb-3 text-accent"><i data-feather="target" class="w-6 h-6 inline-block mr-2"></i> Misi</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 pl-4">
+                                <li>Menyelenggarakan pendidikan agama dan umum yang berkualitas.</li>
+                                <li>Membentuk karakter siswa yang religius, mandiri, dan beretika.</li>
+                                <li>Mengembangkan potensi akademik dan non-akademik siswa.</li>
+                                <li>Menyediakan sarana dan prasarana pendidikan yang modern dan representatif.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-3xl font-bold mb-6 mt-16 text-primary border-b-4 border-accent pb-2 inline-block">Struktur Organisasi</h2>
+                    <div class="p-6 bg-gray-50 rounded-2xl shadow-xl border border-gray-200">
+                        <img src="https://placehold.co/1000x300/a3e635/gray-800?text=ILLUSTRASI+STRUKTUR+ORGANISASI+CERIA" alt="Struktur Organisasi" class="w-full rounded-xl border-4 border-tertiary">
+                    </div>
+                </div>
+            </section>
+            
+            <section class="py-16 bg-gray-50">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row items-center gap-10 bg-white p-8 rounded-3xl shadow-2xl border-l-8 border-r-8 border-primary">
+                        <div class="md:w-1/3">
+                            <img src="https://cdn.pixabay.com/photo/2024/08/31/05/47/ai-generated-9010550_640.png" alt="Ketua Yayasan" class="rounded-full shadow-2xl w-full h-auto border-8 border-white transform hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="md:w-2/3">
+                            <h2 class="text-3xl md:text-4xl font-extrabold mb-4 text-accent">Pesan Hangat dari Ketua Yayasan</h2>
+                            <h3 class="text-xl text-gray-700 font-bold mb-6">Prof. Dr. Hj. Nurhattati Fuad, M.Pd <i data-feather="heart" class="w-5 h-5 inline-block text-red-500"></i></h3>
+                            <blockquote class="text-lg text-gray-600 italic border-l-4 border-secondary pl-4">
+                                "Kami berkomitmen untuk memberikan pendidikan yang tidak hanya unggul dalam ilmu pengetahuan, tetapi juga kaya akan nilai-nilai keislaman dan akhlak mulia. **Bersama kita bentuk generasi yang cerdas, berkarakter, dan penuh senyum!**"
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section id="fasilitas-page" class="page-content" data-page="fasilitas">
+            <div class="relative py-24 bg-tertiary text-gray-800 text-center overflow-hidden">
+                <div class="absolute bottom-0 left-0 w-60 h-60 bg-secondary rounded-full opacity-30 blur-3xl z-0"></div>
+                <div class="container mx-auto px-4 relative z-10">
+                    <h1 class="text-4xl font-extrabold text-white drop-shadow-lg">Fasilitas Modern untuk Belajar Maksimal</h1>
+                    <p class="text-xl mt-2 text-white/90">Menyediakan sarana dan prasarana lengkap demi mendukung setiap jenjang pendidikan.</p>
+                    <img src="https://placehold.co/1200x300/fde047/gray-800?text=Sarana+Umum+Sekolah" alt="Sarana Umum Sekolah" class="w-full h-auto object-cover rounded-3xl mt-8 shadow-2xl border-4 border-primary">
+                </div>
+            </div>
+
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-8 text-primary border-b-4 border-accent pb-2 inline-block">Fasilitas Umum Yayasan</h2>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-2xl text-center shadow-lg border-t-4 border-primary hover:bg-sky-50 transition">
+                            <i data-feather="compass" class="w-10 h-10 mx-auto mb-3 text-primary float-icon" style="animation-duration: 4s;"></i>
+                            <p class="font-semibold text-sm">Ruang Sarana Ibadah</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-2xl text-center shadow-lg border-t-4 border-secondary hover:bg-yellow-50 transition">
+                            <i data-feather="briefcase" class="w-10 h-10 mx-auto mb-3 text-secondary float-icon" style="animation-duration: 5s; animation-delay: 0.5s;"></i>
+                            <p class="font-semibold text-sm">Ruang Kantor</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-2xl text-center shadow-lg border-t-4 border-tertiary hover:bg-lime-50 transition">
+                            <i data-feather="maximize-2" class="w-10 h-10 mx-auto mb-3 text-tertiary float-icon" style="animation-duration: 6s; animation-delay: 1s;"></i>
+                            <p class="font-semibold text-sm">Ruang Serbaguna</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-2xl text-center shadow-lg border-t-4 border-accent hover:bg-pink-50 transition">
+                            <i data-feather="user-check" class="w-10 h-10 mx-auto mb-3 text-accent float-icon" style="animation-duration: 7s; animation-delay: 1.5s;"></i>
+                            <p class="font-semibold text-sm">Ruang Konseling</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-2xl text-center shadow-lg border-t-4 border-primary hover:bg-sky-50 transition">
+                            <i data-feather="coffee" class="w-10 h-10 mx-auto mb-3 text-primary float-icon" style="animation-duration: 8s; animation-delay: 2s;"></i>
+                            <p class="font-semibold text-sm">Ruang Restorasi (Kantin)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-gray-100">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-8 text-primary border-b-4 border-accent pb-2 inline-block">Fasilitas Spesial Per Jenjang</h2>
+
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition border-t-8 border-secondary relative overflow-hidden">
+                            <h3 class="text-2xl font-bold mb-3 text-secondary flex items-center"><i data-feather="smile" class="w-6 h-6 mr-2"></i> RAUDATUL ATHFAL</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 pl-4">
+                                <li><span class="text-accent font-semibold">Area Playground Outdoor</span></li>
+                                <li>Ruang Kelas Kreatif & Nyaman</li>
+                                <li>Perpustakaan Mini Penuh Buku Bergambar</li>
+                                <li>Ruang Makan Sehat & Bersih</li>
+                            </ul>
+                            <a href="#ra" data-page-link="ra" class="mt-4 inline-block text-primary font-semibold">Lihat Detail RA <i data-feather="arrow-right" class="w-4 h-4 inline-block ml-1"></i></a>
+                            <i data-feather="circle" class="absolute top-4 right-4 w-10 h-10 text-secondary opacity-20"></i>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition border-t-8 border-tertiary relative overflow-hidden">
+                            <h3 class="text-2xl font-bold mb-3 text-tertiary flex items-center"><i data-feather="star" class="w-6 h-6 mr-2"></i> MADRASAH IBIDAIYAH</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 pl-4">
+                                <li><span class="text-accent font-semibold">Laboratorium Komputer Modern</span></li>
+                                <li>Ruang Kelas Representatif</li>
+                                <li>Perpustakaan Penuh Ilmu (Fisik & Digital)</li>
+                                <li>Sarana Olah Raga Lengkap</li>
+                            </ul>
+                            <a href="#mi" data-page-link="mi" class="mt-4 inline-block text-primary font-semibold">Lihat Detail MI <i data-feather="arrow-right" class="w-4 h-4 inline-block ml-1"></i></a>
+                            <i data-feather="square" class="absolute top-4 right-4 w-10 h-10 text-tertiary opacity-20"></i>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition border-t-8 border-primary relative overflow-hidden">
+                            <h3 class="text-2xl font-bold mb-3 text-primary flex items-center"><i data-feather="zap" class="w-6 h-6 mr-2"></i> MADRASAH TSANAWIYAH</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 pl-4">
+                                <li><span class="text-accent font-semibold">Laboratorium IPA Terpadu</span></li>
+                                <li>Ruang Serbaguna & Aula Kreativitas</li>
+                                <li>Ruang Kelas Modern</li>
+                                <li>Laboratorium Komputer Lengkap</li>
+                            </ul>
+                            <a href="#mts" data-page-link="mts" class="mt-4 inline-block text-primary font-semibold">Lihat Detail MTs <i data-feather="arrow-right" class="w-4 h-4 inline-block ml-1"></i></a>
+                            <i data-feather="triangle" class="absolute top-4 right-4 w-10 h-10 text-primary opacity-20"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section id="berita-page" class="page-content" data-page="berita">
+            <div class="relative py-24 bg-primary text-white text-center overflow-hidden">
+                <div class="absolute top-0 left-0 w-80 h-80 bg-tertiary rounded-full opacity-10 blur-3xl z-0"></div>
+                <div class="container mx-auto px-4 relative z-10">
+                    <h1 class="text-4xl font-extrabold text-secondary drop-shadow-lg">Berita & Kegiatan Seru Al Istiqlal</h1>
+                    <p class="text-xl mt-2 text-white/90">Seluruh informasi terbaru, prestasi, dan kegiatan dari Yayasan dan semua jenjang pendidikan.</p>
+                    <img src="https://placehold.co/1200x300/a3e635/gray-800?text=Berita+Sekolah+Ceria" alt="Berita Sekolah Ceria" class="w-full h-auto object-cover rounded-3xl mt-8 shadow-2xl border-4 border-secondary">
+                </div>
+            </div>
+
+            <section class="py-16 bg-gray-100">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-3xl font-bold mb-8 text-primary border-b-4 border-accent pb-2 inline-block">Semua Berita Terbaru</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <div class="news-card bg-white rounded-3xl shadow-xl overflow-hidden border-l-8 border-primary">
+                            <img src="https://placehold.co/640x360/38bdf8/FFFFFF?text=Badminton+Juara" alt="MTs Juara Badminton" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-primary text-white text-xs px-3 py-1 rounded-full mb-2 font-semibold">MTs | 14/11/2022</span>
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">MTs Al-Istiqlal Juara 1 Badminton Putra dan Juara 3 Hadang Putri</h3>
+                                <p class="text-gray-600 mb-4">Tim olahraga MTs menunjukkan dominasi mereka di Pekan Olah Raga Seni Madrasah (POSM) dengan meraih dua medali sekaligus.</p>
+                                <a href="#" class="text-accent font-bold flex items-center hover:text-primary">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="news-card bg-white rounded-3xl shadow-xl overflow-hidden border-l-8 border-tertiary">
+                            <img src="https://placehold.co/640x360/a3e635/gray-800?text=Pengumuman+PPDB" alt="Pengumuman PPDB" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-tertiary text-gray-800 text-xs px-3 py-1 rounded-full mb-2 font-semibold">MI | 31/10/2022</span>
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">Informasi Resmi PPDB MI Al-Istiqlal Karawang TA 2023/2024</h3>
+                                <p class="text-gray-600 mb-4">Pengumuman resmi mengenai Penerimaan Peserta Didik Baru (PPDB) untuk jenjang MI. Segera daftarkan putra-putri Anda!</p>
+                                <a href="#" class="text-accent font-bold flex items-center hover:text-primary">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="news-card bg-white rounded-3xl shadow-xl overflow-hidden border-l-8 border-secondary">
+                            <img src="https://placehold.co/640x360/fde047/gray-800?text=Sekolah+Sehat+Juara" alt="Sekolah Sehat" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-secondary text-gray-800 text-xs px-3 py-1 rounded-full mb-2 font-semibold">MI | 31/10/2022</span>
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">MI Al-Istiqlal kembali sukses menjadi Juara I Sekolah Sehat</h3>
+                                <p class="text-gray-600 mb-4">Komitmen MI Al-Istiqlal terhadap kebersihan dan kesehatan lingkungan kembali membuahkan hasil membanggakan.</p>
+                                <a href="#" class="text-accent font-bold flex items-center hover:text-primary">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="news-card bg-white rounded-3xl shadow-xl overflow-hidden border-l-8 border-accent">
+                            <img src="https://placehold.co/640x360/f472b6/FFFFFF?text=Hari+Santri+Nasional" alt="Hari Santri Nasional" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <span class="inline-block bg-accent text-white text-xs px-3 py-1 rounded-full mb-2 font-semibold">Kegiatan Umum | 22/10/2022</span>
+                                <h3 class="text-xl font-bold mb-2 text-gray-800">Peringatan Hari Santri Nasional 2022</h3>
+                                <p class="text-gray-600 mb-4">Seluruh civitas akademika Yayasan Al Istiqlal merayakan Hari Santri Nasional dengan berbagai kegiatan Islami.</p>
+                                <a href="#" class="text-accent font-bold flex items-center hover:text-primary">Baca selengkapnya <i data-feather="arrow-right" class="ml-1 w-4 h-4"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-center mt-10">
+                        <a href="#" class="inline-block bg-primary hover:bg-sky-600 text-white px-8 py-3 rounded-full font-bold transition shadow-lg transform hover:scale-105">Lihat Arsip Berita</a>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-gray-300 pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-white mb-4">Al Istiqlal Karawang</h3>
+                    <p class="mb-4">Yayasan Pendidikan Ma'had Al Istiqlal Karawang - Membina generasi cerdas dan berakhlak.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-accent"><i data-feather="instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-accent"><i data-feather="facebook"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-accent"><i data-feather="youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Kontak Kami</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <i data-feather="map-pin" class="w-4 h-4 mt-1 mr-2 text-primary"></i>
+                            <span>Jln. Kosambi – Telagasari Km. 4, Dsn. Cirejag I RT 006 RW 003, Ds. Cibalongsari, Kec. Klari – Karawang</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="phone" class="w-4 h-4 mr-2 text-primary"></i>
+                            <span>(0267) 8402476</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i data-feather="mail" class="w-4 h-4 mr-2 text-primary"></i>
+                            <span>info@alistiqlal.sch.id</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Jenjang Pendidikan</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#ra" data-page-link="ra" class="hover:text-primary">Raudatul Athfal (RA)</a></li>
+                        <li><a href="#mi" data-page-link="mi" class="hover:text-primary">Madrasah Ibtidaiyah (MI)</a></li>
+                        <li><a href="#mts" data-page-link="mts" class="hover:text-primary">Madrasah Tsanawiyah (MTs)</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Navigasi Cepat</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#tentang" data-page-link="tentang" class="hover:text-primary">Tentang Yayasan</a></li>
+                        <li><a href="#fasilitas" data-page-link="fasilitas" class="hover:text-primary">Fasilitas</a></li>
+                        <li><a href="#berita" data-page-link="berita" class="hover:text-primary">Berita</a></li>
+                        <li><a href="#" class="hover:text-primary">PPDB Online</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm">
+                <p>© 2025 Yayasan Al Istiqlal Karawang. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+
+        // --- Multi-Page Navigation Logic ---
+        const contentContainer = document.getElementById('content-container');
+        const pageLinks = document.querySelectorAll('[data-page-link]');
+        const allPages = document.querySelectorAll('.page-content');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        
+        // Function to show the correct page content
+        function showPage(pageId) {
+            allPages.forEach(page => {
+                page.style.display = 'none';
+            });
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.style.display = 'block';
+            } else {
+                 // Default to home if target is not found
+                document.getElementById('home-page').style.display = 'block';
+            }
+            
+            // Highlight active link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active-link');
+                const targetData = link.getAttribute('data-page-link');
+                
+                // Check if the link data matches the current pageId
+                if (targetData === pageId) {
+                    link.classList.add('active-link');
+                }
+            });
+
+            // Close mobile menu
+            mobileMenu.classList.add('hidden');
+            // Scroll to top of the content area
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Event listener for navigation links
+        pageLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetPage = this.getAttribute('data-page-link');
+                
+                // Prevent default hash jump
+                if (targetPage && targetPage !== '#') {
+                    e.preventDefault();
+                    showPage(targetPage);
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Set initial page on load (default to home or check hash)
+        window.addEventListener('load', () => {
+            const initialHash = window.location.hash.substring(1) || 'home';
+            showPage(initialHash.split('-')[0]);
+        });
+        
+        // Initial setup to display the Home page first
+        showPage('home');
+
+    </script>
+</body>
+</html>
